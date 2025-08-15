@@ -11,6 +11,7 @@ DC_driver motor_4(12, 11, 9);
 // choose which serial to use for the comm protocol.
 HardwareSerial* serial = &Serial1;
 Comm comm(serial);
+const int MOT4 = 0;
 
 void setup() 
 {
@@ -52,7 +53,7 @@ void handle_set_motors(SetMotorsPayload* payload)
   motor_1.analogMove(payload->direction[0], payload->speed[0]);
   motor_2.analogMove(payload->direction[1], payload->speed[1]);
   motor_3.analogMove(payload->direction[2], payload->speed[2]);
-  motor_4.analogMove(payload->direction[3], payload->speed[3]);
+  motor_4.analogMove(payload->direction[3], payload->speed[3]+MOT4);
 
   // TODO(Richo): This is just for debugging...
   serial->print("SET_MOTORS: [");
@@ -80,7 +81,7 @@ void handle_turn(TurnPayload* payload)
   motor_1.analogMove(payload->is_clockwise, payload->speed);
   motor_2.analogMove(payload->is_clockwise, payload->speed);
   motor_3.analogMove(payload->is_clockwise, payload->speed);
-  motor_4.analogMove(payload->is_clockwise, payload->speed);
+  motor_4.analogMove(payload->is_clockwise, payload->speed+MOT4);
 
   // TODO(Richo): This is just for debugging...
   serial->print("TURN: ");
@@ -95,7 +96,7 @@ void handle_move_lr(MoveLRPayload* payload)
   motor_1.analogMove(!payload->is_left, payload->speed);
   motor_2.analogMove(payload->is_left, payload->speed);
   motor_3.analogMove(payload->is_left, payload->speed);
-  motor_4.analogMove(!payload->is_left, payload->speed);
+  motor_4.analogMove(!payload->is_left, payload->speed+MOT4);
 
   // TODO(Richo): This is just for debugging...
   serial->print("MOVE_LR: ");
