@@ -16,7 +16,7 @@ class Comm:
         port = serial.Serial(port_name, baudrate=9600)
         if port.is_open:
             self.port = port
-            self.start_debug_thread()
+            # self.start_debug_thread()
             return True
         else:
             return False
@@ -120,7 +120,7 @@ class Comm:
         self.move_lr(speed)
 
     def move_fb(self, speed):
-        self.MOT4 = 100  # Adjust this constant as needed
+        self.MOT4 = 70  # Adjust this constant as needed
         if not self.is_connected(): return
 
         speed1 = speed
@@ -129,9 +129,9 @@ class Comm:
         speed4 = speed
 
         if speed<0:
-            speed4=speed-self.MOT4
+            speed4=max(speed-self.MOT4,255)
         elif speed>0:
-            speed4=speed+self.MOT4
+            speed4=min(speed+self.MOT4,255)
         else:
             speed4=0
 
@@ -155,28 +155,32 @@ comm = Comm()
 # comm.connect("COM16") # USB
 comm.connect("COM14") # Bluetooth
 
-comm.set_motors(0, 0, 0, 60)
-comm.stop()
+# comm.set_motors(0, 0, 0, 60)
+# time.sleep(1)
+# comm.stop()
 
-comm.move_forward(90)
-comm.stop()
+comm.move_forward(200)
+# comm.stop()
 
-comm.move_backward(150)
-comm.stop()
+# comm.move_backward(150)
+# comm.stop()
 
-comm.turn_left(90)
-# comm.turn_left(128)
-comm.stop()
+# comm.turn_left(90)
+# # comm.turn_left(128)
+# comm.stop()
 
-comm.turn_right(90)
-# comm.turn_right(128)
-comm.stop()
+# comm.turn_right(90)
+# # comm.turn_right(128)
+# comm.stop()
 
-comm.MOT4 = 50
-comm.move_left(150)
-comm.stop()
+# comm.MOT4 = 50
+# comm.move_left(150)
+# comm.stop()
 
-comm.move_right(150)
+# comm.move_right(150)
+# comm.stop()
+
+time.sleep(2)
 comm.stop()
 
 comm.disconnect()
